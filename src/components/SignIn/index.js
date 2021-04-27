@@ -3,6 +3,8 @@ import './styles.scss';
 import Button from '../../components/forms/Button';
 import { signInWithGoogle, auth } from '../../firebase/ultils';
 import FormInput from '../../components/forms/FormInput';
+import { Link } from 'react-router-dom';
+import AuthWrapper from '../AuthWrapper';
 class SignIn extends Component {
 
     initialValue = {
@@ -38,49 +40,51 @@ class SignIn extends Component {
     }
 
     render() {
+        const configAuthWrapper = {
+            headline: 'login'
+        };
         const { email, password, errors } = this.state;
         return (
-            <div className="signin">
-                <div className="wrap">
-                    <h2>Login</h2>
-                    <div className="formWrap">
-                        <form onSubmit={this.handleSubmit}>
-                            <div className="socialSignIn">
-                                {errors && errors.length > 0 && (
-                                    <div className="row">
-                                        <ul>
-                                            {
-                                                errors.map((error, index) => {
-                                                    return (
-                                                        <li className="text-danger" key={index}>{error}</li>
-                                                    )
-                                                })
-                                            }
-                                        </ul>
-                                    </div>
-                                )}
-
+            <AuthWrapper {...configAuthWrapper}>
+                <div className="formWrap">
+                    <form onSubmit={this.handleSubmit}>
+                        <div className="socialSignIn">
+                            {errors && errors.length > 0 && (
                                 <div className="row">
-                                    <FormInput name="email" type="email" placeholder="Email" value={email}
-                                        onChange={this.handleChangeInput}
-                                    />
-                                    <FormInput name="password" type="password" placeholder="Password" value={password}
-                                        onChange={this.handleChangeInput}
-                                    />
+                                    <ul>
+                                        {
+                                            errors.map((error, index) => {
+                                                return (
+                                                    <li className="text-danger" key={index}>{error}</li>
+                                                )
+                                            })
+                                        }
+                                    </ul>
                                 </div>
-                                <div className="row">
-                                    <Button type="submit">
-                                        Login
-                                    </Button>
-                                    <Button type="button" onClick={signInWithGoogle}>
-                                        Sign in with Google
-                                    </Button>
-                                </div>
+                            )}
+                            <div className="row">
+                                <FormInput name="email" type="email" placeholder="Email" value={email}
+                                    onChange={this.handleChangeInput}
+                                />
+                                <FormInput name="password" type="password" placeholder="Password" value={password}
+                                    onChange={this.handleChangeInput}
+                                />
                             </div>
-                        </form>
-                    </div>
+                            <div className="row forgot-password">
+                                <Link to="/recovery">For got password?</Link>
+                            </div>
+                            <div className="row">
+                                <Button type="submit">
+                                    Login
+                                    </Button>
+                                <Button type="button" onClick={signInWithGoogle}>
+                                    Sign in with Google
+                                    </Button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-            </div>
+            </AuthWrapper>
         )
     }
 }

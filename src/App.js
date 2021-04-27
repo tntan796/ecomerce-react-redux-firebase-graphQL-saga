@@ -7,6 +7,7 @@ import HomeLayout from './layouts/HomeLayout';
 import Login from './pages/Login';
 import { useEffect, useState } from 'react';
 import { auth, handlUserProfile } from './firebase/ultils';
+import Recovery from './pages/Recovery';
 
 
 function App() {
@@ -52,6 +53,11 @@ function App() {
         <Redirect to = "/"/> : (
           <MainLayout  currentUser = {state.currentUser}>
             <Login></Login>
+          </MainLayout>
+        )}></Route>
+         <Route path="/recovery" render = {() => state.currentUser ? <Redirect to="/"/> : (
+          <MainLayout currentUser = {state.currentUser}>
+            <Recovery></Recovery>
           </MainLayout>
         )}></Route>
       </Switch>

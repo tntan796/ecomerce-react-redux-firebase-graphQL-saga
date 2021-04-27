@@ -43,7 +43,7 @@ function App() {
             <HomePage></HomePage>
           </HomeLayout>
         )}></Route>
-        <Route path="/registration" render = {() => (
+        <Route path="/registration" render = {() => state.currentUser ? <Redirect to="/"/> : (
           <MainLayout currentUser = {state.currentUser}>
             <Registration></Registration>
           </MainLayout>

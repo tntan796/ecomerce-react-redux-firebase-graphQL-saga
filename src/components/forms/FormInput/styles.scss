@@ -1,0 +1,16 @@
+.formRow {
+    margin-bottom: 1.5rem;
+
+    label {
+        font-size: 1.5rem;
+        color: rgb(43, 42, 42);
+    }
+
+    input {
+        width: 100%;
+        border: 1px solid rgb(216, 215, 215);
+        padding: .8rem;
+        border-radius: .5rem;
+        margin-top: .7rem;
+    }    
+}

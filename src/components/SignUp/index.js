@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from './../../components/forms/Button'
 import FormInput from '../../components/forms/FormInput';
 import './styles.scss';
-import { auth, handlUserProfile } from '../../firebase/ultils';
 import AuthWrapper from '../AuthWrapper';
+import { useDispatch, useSelector } from 'react-redux';
+import { signUpUser } from '../../redux/User/user.action';
+import { withRouter } from 'react-router';
+
 const initialState = {
     displayName: '',
     email: '',
@@ -11,30 +14,37 @@ const initialState = {
     confirmPassword: '',
     errors: []
 };
-
+const mapState = ({user}) => ({
+    signUpSuccess: user.signUpSuccess,
+    signUpError: user.signUpError
+});
 const SignUp = props => {
     const [state, setstate] = useState({ ...initialState });
-
+    const {signUpSuccess, signUpError} = useSelector(mapState);
+    const dispatch = useDispatch();
     const handleChange = e => {
         const { name, value } = e.target;
         setstate({ ...state, [name]: value });
     }
 
+    useEffect(() => {
+        if (signUpSuccess) {
+            setstate({...initialState});
+            props.history.push('/');
+        }
+    }, [signUpSuccess])
+
+    useEffect(() => {
+        console.log('error chnge:', signUpError);
+      if (signUpError.length > 0) {
+          setstate({...state, errors: signUpError});
+      }
+    }, [signUpError])
+
     const handleRegister = async e => {
         e.preventDefault();
         const { displayName, email, password, confirmPassword, errors } = state;
-        if (password !== confirmPassword) {
-            const err = ['Password Don\'t match'];
-            setstate({ ...state, errors: err });
-            return;
-        }
-        try {
-            const { user } = await auth.createUserWithEmailAndPassword(email, password);
-            await handlUserProfile(user, { displayName });
-            setstate({ ...initialState });
-        } catch (error) {
-            setstate({ ...state, errors: [error.message] });
-        }
+        dispatch(signUpUser({ displayName, email, password, confirmPassword}));
     }
 
     const configAuthWrapper = {
@@ -81,4 +91,4 @@ const SignUp = props => {
     )
 }
 
-export default SignUp;
+export default withRouter(SignUp);

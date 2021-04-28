@@ -5,7 +5,7 @@ import FormInput from '../../components/forms/FormInput';
 import { Link, withRouter } from 'react-router-dom';
 import AuthWrapper from '../AuthWrapper';
 import { useDispatch, useSelector } from 'react-redux';
-import { signInUser, signInWithGoogle } from '../../redux/User/user.action';
+import { signInUser, signInWithGoogleRequest } from '../../redux/User/user.action';
 
 
 const mapState = ({ user }) => ({
@@ -33,6 +33,7 @@ const SignIn = props => {
             props.history.push('/');
         }
     }, [signInSuccess]);
+
     useEffect(() => {
         if (signInError) {
             setstate({
@@ -40,6 +41,7 @@ const SignIn = props => {
             });
         }
     }, [signInError]);
+
     useEffect(() => {
         if (signInWithGoogleSuccess) {
             setstate({
@@ -48,6 +50,7 @@ const SignIn = props => {
             props.history.push('/');
         }
     }, [signInWithGoogleSuccess]);
+
     useEffect(() => {
         if (signInWithGoogleError) {
             setstate({
@@ -74,8 +77,7 @@ const SignIn = props => {
     };
 
     const handleGoogleSignIn = () => {
-        console.log('111');
-        dispatch(signInWithGoogle);
+        dispatch(signInWithGoogleRequest());
     }
 
     return (

@@ -1,5 +1,5 @@
 import userTypes from './user.types';
-import { auth, handlUserProfile, GoogleProvider } from '../../firebase/ultils';
+import { auth, handlUserProfile, signInWithGoogle } from '../../firebase/ultils';
 
 
 export const setCurrentUser = user => ({
@@ -95,9 +95,9 @@ const signInWithGoogleError = error => ({
     payload: [error.message]
 })
 
-export const signInWithGoogle = () => async dispatch => {
+export const signInWithGoogleRequest = () => async dispatch => {
     try {
-        await auth.signInWithGoogle(GoogleProvider).then(() => {
+        await signInWithGoogle().then(() => {
             dispatch(signInWithGoogleSuccess)
         })
         .catch(error => {

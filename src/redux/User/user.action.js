@@ -1,7 +1,26 @@
 import userTypes from './user.types';
 import { auth, handlUserProfile, signInWithGoogle } from '../../firebase/ultils';
 
+// Redux Saga
+export const emailSignInStart = userCredential => ({
+    type: userTypes.EMAIL_SIGN_IN_START,
+    payload: userCredential
+});
 
+export const emailSignInSuccess = user => ({
+    type: userTypes.EMAIL_SIGN_IN_SUCCESS,
+    payload: user
+});
+
+
+
+export const checkUserSession = () => ({
+    type: userTypes.CHECK_USER_SESSION,
+})
+
+
+
+// Redux thunk
 export const setCurrentUser = user => ({
     type: userTypes.SET_CURRENT_USER,
     payload: user

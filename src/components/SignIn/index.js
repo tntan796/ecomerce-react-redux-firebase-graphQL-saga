@@ -5,10 +5,11 @@ import FormInput from '../../components/forms/FormInput';
 import { Link, withRouter } from 'react-router-dom';
 import AuthWrapper from '../AuthWrapper';
 import { useDispatch, useSelector } from 'react-redux';
-import { signInUser, signInWithGoogleRequest } from '../../redux/User/user.action';
+import { emailSignInStart, signInUser, signInWithGoogleRequest } from '../../redux/User/user.action';
 
 
 const mapState = ({ user }) => ({
+    currentUser: user.currentUser,
     signInSuccess: user.signInSuccess,
     signInError: user.signInError,
     signInWithGoogleSuccess: user.signInWithGoogleSuccess,
@@ -16,7 +17,7 @@ const mapState = ({ user }) => ({
 });
 
 const SignIn = props => {
-    const { signInSuccess, signInError, signInWithGoogleSuccess, signInWithGoogleError } = useSelector(mapState);
+    const { currentUser, signInSuccess, signInError, signInWithGoogleSuccess, signInWithGoogleError } = useSelector(mapState);
     const dispatch = useDispatch();
     const initialState = {
         email: '',
@@ -26,13 +27,13 @@ const SignIn = props => {
     const [state, setstate] = useState(initialState)
 
     useEffect(() => {
-        if (signInSuccess) {
+        if (currentUser) {
             setstate({
                 ...initialState
             });
             props.history.push('/');
         }
-    }, [signInSuccess]);
+    }, [currentUser, signInSuccess, signInWithGoogleSuccess]);
 
     useEffect(() => {
         if (signInError) {
@@ -42,14 +43,6 @@ const SignIn = props => {
         }
     }, [signInError]);
 
-    useEffect(() => {
-        if (signInWithGoogleSuccess) {
-            setstate({
-                ...initialState
-            });
-            props.history.push('/');
-        }
-    }, [signInWithGoogleSuccess]);
 
     useEffect(() => {
         if (signInWithGoogleError) {
@@ -62,7 +55,7 @@ const SignIn = props => {
     const handleSubmit = async e => {
         e.preventDefault();
         const { email, password } = state;
-        dispatch(signInUser({ email, password }));
+        dispatch(emailSignInStart({ email, password }));
     }
 
     const handleChangeInput = e => {

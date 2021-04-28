@@ -7,11 +7,9 @@ import HomeLayout from './layouts/HomeLayout';
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
 import { useEffect } from 'react';
-import { auth, handlUserProfile } from './firebase/ultils';
 import Recovery from './pages/Recovery';
 import * as UserAction from './redux/User/user.action';
 import { useDispatch, useSelector } from 'react-redux';
-import withAuth from './components/hoc/withAuth';
 
 function App() {
   let authenListener = null;
@@ -19,28 +17,13 @@ function App() {
   let currentUser = useSelector((state) => state.user.currentUser);
 
   let dispatch = useDispatch();
+  
   useEffect(() => {
-    authenListener = auth.onAuthStateChanged(async userAuth => {
-      if (userAuth) {
-        const userRef = await handlUserProfile(userAuth);
-        userRef.onSnapshot(snapshot => {
-          dispatch(
-            UserAction.setCurrentUser({
-              id: snapshot.id,
-              ...snapshot.data()
-            })
-          )
-        });
-      }
-      dispatch(
-        UserAction.setCurrentUser(null)
-      )
-    });
-
+    effect
     return () => {
-      authenListener();
+      cleanup
     }
-  }, [])
+  }, [UserAction.checkUserSession])
 
   return (
     <div className="App">
